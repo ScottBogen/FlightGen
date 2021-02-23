@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Col, Container, Form, FormGroup, FormLabel, Nav, Row } from 'react-bootstrap';
+import MenuButton from './Button'
 
 class FlightForm extends React.Component {
 
@@ -7,6 +8,8 @@ class FlightForm extends React.Component {
     super();
     this.state = {}
   }
+
+
   
   render() {
     return (
@@ -16,12 +19,22 @@ class FlightForm extends React.Component {
           <Container>
             <Form>
               <Form.Group controlId="formAirportSelection">
+
+                {/* <Form.Label> <h4>Airport</h4></Form.Label>
+                <Form.Control type="text" placeholder="e.g. KLAX or Los Angeles Intl."/>
+                
+
+                <MenuButton message="Arrivals"/>
+                <MenuButton message="Departures"/>
+                <MenuButton message="Random"/> */}
+
                 <Form.Label> <h4>Departing</h4></Form.Label>
                 <Form.Control type="text" placeholder="e.g. KLAX or Los Angeles Intl."></Form.Control>
                 <Form.Text> <h5>— or —</h5> </Form.Text>
 
                 <Form.Label><h4>Arriving</h4></Form.Label>
                 <Form.Control type="text" placeholder="e.g. KDEN or Denver Intl."></Form.Control>
+                
 
               </Form.Group>
 
@@ -44,7 +57,7 @@ class FlightForm extends React.Component {
 
 
               <Form.Group controlId="formAirportSizeSelection">
-                <Form.Label>Airport Size</Form.Label>
+                <Form.Label><h4>Airport Size</h4></Form.Label>
                 <Form.Check type="checkbox" label="Small" />
                 <Form.Check type="checkbox" label="Medium" />
                 <Form.Check type="checkbox" label="Large" />
