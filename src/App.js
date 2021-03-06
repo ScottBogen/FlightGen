@@ -3,6 +3,7 @@ import FlightForm from './FlightForm'
 import ResultsPage from './ResultsPage'
 import Header from './Header'
 
+
 /* 
   Main page: MainView
   When the form is successfully submitted, change this view to the results page, where values will be temporary until filled in by the response
@@ -14,7 +15,8 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = { 
-      currentPage: <FlightForm/> 
+      currentPage: <FlightForm/>,
+      currentButton:  
     }
   }
 
@@ -23,8 +25,7 @@ class App extends React.Component {
       <div>
         <Header/>
         <FlightForm/>
-      </div>
-    
+      </div> 
     );
   }
 }

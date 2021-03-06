@@ -1,6 +1,7 @@
 import React from "react"
-import Airport from './Airport'
-import airports from './AirportList'
+import { Col, Container, Row } from "react-bootstrap";
+import AirportCard from './AirportCard'
+
 
 class ResultsPage extends React.Component {
     
@@ -12,22 +13,25 @@ class ResultsPage extends React.Component {
             airportItems: []
         }
 
-        this.receiveAirports = this.receiveAirports.bind(this);
-    }
-
-    receiveAirports() {
-        this.state.airportItems = airports;
     }
 
     render() {
         return ( 
             <div>
-                <p> Hello world </p>
-                <p> Airports: </p>
-                {this.state.airportItems.length}
-                <div>
-                <button onClick={this.receiveAirports}></button>
-                </div>
+                <Container>
+                    <Row>
+                        <Col>
+                            <h1 className="text-left">Departing</h1>
+                            <AirportCard/>
+                        </Col>
+
+                        <Col>
+                            <h1 className="text-left">Arriving</h1>
+                            <AirportCard/>
+                        </Col>
+                    </Row>
+
+                </Container>
             </div>
         )
     }

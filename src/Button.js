@@ -5,7 +5,9 @@ class MenuButton extends React.Component {
     
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            isActive: false
+        };
     }
 
 
@@ -15,14 +17,12 @@ class MenuButton extends React.Component {
             backgroundColor: "DodgerBlue",
             padding: "10px",
             fontFamily: "Arial",
-            padding: "100px"
         };
 
         return (
             <div>
-                <Button type="button" style={mystyle}>{this.props.message}</Button>
+                <Button type="button" class="btn-lg" style={mystyle} >{this.props.message}</Button>
             </div>
-
         );
     }
 } 
