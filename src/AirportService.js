@@ -9,8 +9,6 @@ class AirportService {
         console.log(airports)
         return airports
     }
-
-    
 }
 
 export default new AirportService()

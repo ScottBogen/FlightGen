@@ -23,7 +23,6 @@ class AirportCard extends React.Component {
             </div>
         )
     }
-
 }
 
 export default AirportCard
