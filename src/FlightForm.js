@@ -10,10 +10,15 @@ class FlightForm extends React.Component {
     this.state = { }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
     this.props.onChange(e.target.value, e.target.name);
+  }
+
+  handleSubmit(e) {
+    this.props.onSubmit();
   }
   
   render() {
@@ -106,7 +111,7 @@ class FlightForm extends React.Component {
                   
               </Form.Group>
 
-              <Button type="submit"> Generate Flight </Button>
+              <Button type="submit" onChange={this.handleSubmit}> Generate Flight </Button>
 
             </Form>
 

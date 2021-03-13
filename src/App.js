@@ -2,6 +2,7 @@ import React from 'react'
 import FlightForm from './FlightForm'
 import ResultsPage from './ResultsPage'
 import Header from './Header'
+import AirportService from './AirportService'
 
 
 /* 
@@ -28,6 +29,8 @@ class App extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
   }
 
   // it would be cleaner if I passed the type in addition to val and name, then type checked to see if type="checkbox"
@@ -46,26 +49,34 @@ class App extends React.Component {
     this.setState({
       input
     }); 
+  }
 
+  handleSubmit() {
+    // make call to axios
+
+    AirportService.getAirports().then((response) => {
+      this.setState()
+    })
 
   }
 
 
-
+// componentDidMount() {
+//   AirportService.getAirports().then((response) => {
+//     this.setState({ airports: response.data })
+//   });
+// }
 
   render () {
     return (
       <div>
         <Header/>
-        <FlightForm input={this.state.input} onChange={this.handleChange}/>
+        <FlightForm input={this.state.input} onChange={this.handleChange} onSubmit={this.handleSubmit}/>
         
         Departure: {this.state.input.departureAirport}
         Arrival: {this.state.input.arrivalAirport}
         Min: {this.state.input.minRange}
         Max: {this.state.input.maxRange}
-        Small: {this.state.input.allowsSmallAirports}
-        Med: {this.state.input.allowsMediumAirports}
-        Large: {this.state.input.allowsLargeAirports}
 
       </div> 
     );
