@@ -7,7 +7,9 @@ class FlightForm extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { }
+    this.state = {
+      validated: false
+     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,6 +20,8 @@ class FlightForm extends React.Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
+
     this.props.onSubmit();
   }
   
@@ -37,7 +41,7 @@ class FlightForm extends React.Component {
     return (
       <div>
           <Container>
-            <Form>
+            <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
               <Form.Group controlId="formAirportSelection">
 
               <Form.Label> <h4>Departing</h4></Form.Label>
@@ -106,28 +110,18 @@ class FlightForm extends React.Component {
                   type="checkbox" 
                   label="Large" 
                   name="allowsLargeAirports"
-                  value={allowsMediumAirports}
+                  value={allowsLargeAirports}
                   onChange={this.handleChange} />              
                   
               </Form.Group>
 
-              <Button type="submit" onChange={this.handleSubmit}> Generate Flight </Button>
+              <Button type="submit"> Generate Flight </Button>
 
             </Form>
-
-            <h1 className="text-center">
-              Airport List: 
-              </h1>
           </Container>
       </div>
     );
   }
 }
-
-// componentDidMount() {
-//   AirportService.getAirports().then((response) => {
-//     this.setState({ airports: response.data })
-//   });
-// }
 
 export default FlightForm
