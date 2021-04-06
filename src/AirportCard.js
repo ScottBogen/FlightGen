@@ -7,18 +7,37 @@ class AirportCard extends React.Component {
         super(props)
         this.state = { }
     }    
+
+    formatAirportType(size) {
+        switch (size) {
+            case 'small_airport':
+                return 'Small'
+
+            case 'medium_airport':
+                return 'Medium'
+            
+            case 'large_airport':
+                return 'Large'
+            default:
+                return size;
+        }
+    }
+
     render() {
+
+        var airport = this.props.info;
+
         return(
             <div>
                 <Card>
-                    <Card.Title>{this.props.info.airportName}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{this.props.info.municipality}</Card.Subtitle>
+                    <Card.Title>{airport.airportName}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">{airport.municipality}</Card.Subtitle>
                     <Card.Text>
-                        <p>Size: {this.props.info.airportType}</p>
-                        <p>Elevation: {this.props.info.elevation}'</p>
+                        <p>Size: {this.formatAirportType(airport.airportType)}</p>
+                        <p>Elevation: {airport.elevation}'</p>
                     </Card.Text>
-                    <Card.Link href={this.props.info.homelink} >Website</Card.Link>
-                    <Card.Link href={this.props.info.wikipedia}>Wikipedia</Card.Link>
+                    <Card.Link href={airport.homelink} >Website</Card.Link>
+                    <Card.Link href={airport.wikipedia}>Wikipedia</Card.Link>
                 </Card>
             </div>
         )

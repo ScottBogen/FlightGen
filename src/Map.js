@@ -1,6 +1,6 @@
 import React from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
+import './Map.css'
 
 /*  Notes:
         We will need a map centered at the midpoint between Departing and Arriving
@@ -16,19 +16,20 @@ class Map extends React.Component {
         }
     }
 
-
-
     render() {
         
         const latIndex = 0;
         const longIndex = 1;
 
+        // represented as lists [float, float]
         const departureCoords = this.props.departureCoords;
         const arrivalCoords = this.props.arrivalCoords;
 
         const latitudalMidpoint = (departureCoords[latIndex] + arrivalCoords[latIndex]) / 2;
         const longitudalMidpoint = (departureCoords[longIndex] + arrivalCoords[longIndex]) / 2;
 
+        const polylinePoints = [departureCoords, arrivalCoords];
+        const polyLineColor = {color: 'red'};
 
         // this midpoint is for centering the view
         const midpoint = [latitudalMidpoint, longitudalMidpoint];
@@ -37,16 +38,14 @@ class Map extends React.Component {
             <div>
                 <MapContainer center={midpoint} zoom={6} scrollWheelZoom={false}>
                     <TileLayer
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        attribution='&copy; <a href="http:/`/osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={departureCoords}>
+                    <Marker position={departureCoords} />
+                    <Marker position={arrivalCoords}  />
 
-                    </Marker>
+                    <Polyline positions={polylinePoints} pathOptions={polyLineColor}/>
 
-                    <Marker position={arrivalCoords}>
-
-                    </Marker>
                 </MapContainer>
             </div>
         );

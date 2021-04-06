@@ -22,7 +22,10 @@ class ResultsPage extends React.Component {
     }
 
 
+
     render() {
+
+
 
         const departure = this.props.departureAirport;
         const arrival = this.props.arrivalAirport;
@@ -33,30 +36,33 @@ class ResultsPage extends React.Component {
         
         return ( 
             <div>
-                <Container>
+                <Container className="border">
                     <Row>
-                        <Col>
-                            <h1 className="text-left">Departing</h1>
+                        <Col xs={5} className="left-col">
+                            <h2 className="text-left">Departing  </h2>
                             {<AirportCard info={departure} />}
+
+                            <h2 className="text-left">Arriving  &nbsp;                           
+                            <Button variant="primary" onClick={this.handleRandom}>Random</Button>
+                            </h2>  
+
+                            {<AirportCard info={arrival} />}
+                            <Button variant="primary" onClick={this.handleBack}> Back </Button>
                         </Col>
 
-                        <Col>
-                            <h1 className="text-left">Arriving</h1>
-                            {<AirportCard info={arrival} />}
-                            <Button variant="primary" onClick={this.handleRandom}>Randomize</Button>
+                        <Col xs={7} className="right-col">
+                            <Map    
+                                departureCoords={[departure.latitudeDeg, departure.longitudeDeg]} 
+                                arrivalCoords={[arrival.latitudeDeg, arrival.longitudeDeg]}
+                            />
                         </Col>
                     </Row>
 
                         
                 </Container>
-                <Map    
-                    departureCoords={[departure.latitudeDeg, departure.longitudeDeg]} 
-                    arrivalCoords={[arrival.latitudeDeg, arrival.longitudeDeg]}
-                />
 
 
 
-                <Button variant="primary" onClick={this.handleBack}> Back </Button>
 
             </div>
         );

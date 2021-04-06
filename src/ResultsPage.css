@@ -1,0 +1,10 @@
+.results-container {
+    display: flex;
+    flex-direction: column;
+    height: 300vh;
+}
+
+.left-col {
+    flex: 1;
+    overflow-y: scroll;
+}
