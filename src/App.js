@@ -3,6 +3,9 @@ import FlightForm from './FlightForm'
 import ResultsPage from './ResultsPage'
 import Header from './Header'
 import AirportService from './AirportService'
+import airports from './AirportList'
+import Map from './Map'
+import "./App.css"
 
 
 /* 
@@ -26,11 +29,15 @@ class App extends React.Component {
         allowsMediumAirports: false,
         allowsLargeAirports: false
       }, 
-      airports: []
+      airports: [],
+      arrivalAirport: null,
+      departureAirport: null
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleRandom = this.handleRandom.bind(this);
+    this.switchPages = this.switchPages.bind(this);
   }
 
   // it would be cleaner if I passed the type in addition to val and name, then type checked to see if type="checkbox"
@@ -45,27 +52,78 @@ class App extends React.Component {
     }
     this.setState({
       input
-    }); 
+    });
   }
 
   handleSubmit(){ 
     // make call to axios
     let inputs = this.state.userInputs;
-    console.log(inputs)
 
-    AirportService.getAirports(inputs).then((response) => {
-      this.setState({ airports: response.data })
-      console.log(response.data);
-    })
+    AirportService.getAirports(inputs).then((response) => {  
+      var airports = response.data;
 
-    this.switchPages();
+      this.setState({
+        airports: airports
+      })
 
+      this.updateAirports(airports);
+      this.switchPages();
+    });
+  }
+
+  updateAirports(airports) {
+    const departure = airports[0];
+    const arrival = this.selectRandomAirport(departure);
+
+    this.setState({
+      arrivalAirport: arrival,
+      departureAirport: departure
+    });
+
+    console.log("State:")
+    console.log(this.state);
+  }
+
+  selectRandomAirport(currAirport) {
+    console.log("Curr airport: ")
+    console.log(currAirport);
+    if (!currAirport || !this.state.airports) return null;
+    
+    const min = 1;
+    const max = this.state.airports.length;
+    const currIndex = this.state.airports.map(e => e.airportId).indexOf(currAirport.airportId);
+    console.log("min = " + min + " max = " + max + " curr = " + currIndex);
+
+    
+    var randomInt = currIndex;
+    while (randomInt == currIndex) {
+        randomInt = Math.floor(Math.random() * (max - min) + min);
+    }
+
+    console.log("Random gen: ");
+    console.log(this.state.airports[randomInt]);
+    return this.state.airports[randomInt];
+  }
+
+  handleRandom(e) {
+    var originalArrival = this.state.arrivalAirport;
+    var newArrival = this.selectRandomAirport(originalArrival);
+    this.setState({
+        arrivalAirport: newArrival
+    });
   }
 
   switchPages() {
     this.setState(prevState => ({
       formPage: !prevState.formPage,
-      resultsPage: !prevState.resultsPage
+      resultsPage: !prevState.resultsPage,
+
+      userInputs: {
+        allowsSmallAirports: false,
+        allowsMediumAirports: false,
+        allowsLargeAirports: false
+      }
+
     }));
   }
 
@@ -82,16 +140,13 @@ class App extends React.Component {
         
         {this.state.resultsPage && 
           <ResultsPage
-            airports={this.state.airports}
+            onRandom={this.handleRandom} 
+            onBack={this.switchPages}
+            airports={this.state.airports} 
+            arrivalAirport={this.state.arrivalAirport} 
+            departureAirport={this.state.departureAirport}
           />
         }
-
-        {/* <h1> Airport List: </h1>
-        
-        <div>
-          {this.state.airports.map(airport => <p>{airport.airportName}</p>)}
-        </div> */}
-
 
       </div> 
     );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Col, Container, Form, Row } from 'react-bootstrap';
 import MenuButton from './Button'
 import AirportService from './AirportService'
 
@@ -8,7 +8,8 @@ class FlightForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      validated: false
+      validated: false,
+      selectedMethod: "departure"
      }
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,22 +22,18 @@ class FlightForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     this.props.onSubmit();
   }
   
   render() {
     const input = this.props.input; 
-    
+
     const departureAirport = input.departureAirport; 
-    const arrivalAirport = input.arrivalAirport;
     const minRange = input.minRange;
     const maxRange = input.maxRange;
     const allowsSmallAirports = input.allowsSmallAirports;
     const allowsMediumAirports = input.allowsMediumAirports;
     const allowsLargeAirports = input.allowsLargeAirports;
-
-    console.log(input);
 
     return (
       <div>
@@ -44,24 +41,13 @@ class FlightForm extends React.Component {
             <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
               <Form.Group controlId="formAirportSelection">
 
-              <Form.Label> <h4>Departing</h4></Form.Label>
+              <Form.Label> <h4>Airport</h4></Form.Label>
                 <Form.Control 
                   type="text" 
                   placeholder="e.g. KLAX or Los Angeles Intl." 
                   name="departureAirport"
                   value={departureAirport}
                   onChange={this.handleChange}/>
-
-                <Form.Text> <h5>— or —</h5> </Form.Text>
-
-                <Form.Label><h4>Arriving</h4></Form.Label>
-                <Form.Control 
-                  type="text" 
-                  placeholder="e.g. KDEN or Denver Intl."
-                  name="arrivalAirport"
-                  value={arrivalAirport}
-                  onChange={this.handleChange}/>
-
               </Form.Group>
 
               <Form.Group controlId="formDistanceSelection">
@@ -111,12 +97,11 @@ class FlightForm extends React.Component {
                   label="Large" 
                   name="allowsLargeAirports"
                   value={allowsLargeAirports}
-                  onChange={this.handleChange} />              
+                  onChange={this.handleChange} />         
                   
               </Form.Group>
 
               <Button type="submit"> Generate Flight </Button>
-
             </Form>
           </Container>
       </div>
