@@ -27,17 +27,34 @@ class AirportCard extends React.Component {
 
         var airport = this.props.info;
 
+        console.log("Details:")
+        console.log(airport.homeLink)
+        console.log(airport.wikipediaLink)
+
+        const homeLink = airport.homeLink ? 
+            <Card.Link href={airport.homeLink} >Website</Card.Link> : <div> No website </div>;
+
+        const wikiLink = airport.wikiLink ? 
+            <Card.Link href={airport.wikipediaLink} >Wikipedia</Card.Link> : <div> No wiki entry</div>;
+
+        
+
         return(
             <div>
                 <Card>
-                    <Card.Title>{airport.airportName}</Card.Title>
+                    <Card.Title as="h5" >{airport.airportName} ({airport.ident})</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">{airport.municipality}</Card.Subtitle>
                     <Card.Text>
-                        <p>Size: {this.formatAirportType(airport.airportType)}</p>
-                        <p>Elevation: {airport.elevation}'</p>
+                        <p>
+                            Size: {this.formatAirportType(airport.airportType)} <br/>
+                            Elevation: {airport.elevation}'
+                        </p>
                     </Card.Text>
-                    <Card.Link href={airport.homelink} >Website</Card.Link>
-                    <Card.Link href={airport.wikipedia}>Wikipedia</Card.Link>
+
+                    <Card.Footer className="text-center">
+                        {homeLink}
+                        {wikiLink}
+                    </Card.Footer>
                 </Card>
             </div>
         )

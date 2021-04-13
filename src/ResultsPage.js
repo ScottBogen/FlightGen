@@ -39,7 +39,7 @@ class ResultsPage extends React.Component {
                 <Container className="border">
                     <Row>
                         <Col xs={5} className="left-col">
-                            <h2 className="text-left">Departing  </h2>
+                            <h2 className="text-left">Departing </h2>
                             {<AirportCard info={departure} />}
 
                             <h2 className="text-left">Arriving  &nbsp;                           
