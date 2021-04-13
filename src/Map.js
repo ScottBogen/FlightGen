@@ -9,47 +9,40 @@ import './Map.css'
         So really, all we need to send in the props to this Map is the departure=[lat, long] and arrival=[lat, long]
 */
 
-class Map extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
+function Map(props) {
 
-    render() {
-        
-        const latIndex = 0;
-        const longIndex = 1;
+    // indices for [lat,long]
+    const latIndex = 0;
+    const longIndex = 1;
 
-        // represented as lists [float, float]
-        const departureCoords = this.props.departureCoords;
-        const arrivalCoords = this.props.arrivalCoords;
+    const departureCoords = props.departureCoords;
+    const arrivalCoords = props.arrivalCoords;
 
-        const latitudalMidpoint = (departureCoords[latIndex] + arrivalCoords[latIndex]) / 2;
-        const longitudalMidpoint = (departureCoords[longIndex] + arrivalCoords[longIndex]) / 2;
+    // find the midpoint to calculate where to center the map
+    const latitudalMidpoint = (departureCoords[latIndex] + arrivalCoords[latIndex]) / 2;
+    const longitudalMidpoint = (departureCoords[longIndex] + arrivalCoords[longIndex]) / 2;
+    const midpoint = [latitudalMidpoint, longitudalMidpoint];
+    
+    // Polyline requires points/color
+    const polylinePoints = [departureCoords, arrivalCoords];
+    const polyLineColor = {color: 'red'};
 
-        const polylinePoints = [departureCoords, arrivalCoords];
-        const polyLineColor = {color: 'red'};
 
-        // this midpoint is for centering the view
-        const midpoint = [latitudalMidpoint, longitudalMidpoint];
+    return (
+        <div>
+            <MapContainer center={midpoint} zoom={6} scrollWheelZoom={false}>
+                <TileLayer
+                    attribution='&copy; <a href="http:/`/osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={departureCoords} />
+                <Marker position={arrivalCoords}  />
 
-        return (
-            <div>
-                <MapContainer center={midpoint} zoom={6} scrollWheelZoom={false}>
-                    <TileLayer
-                        attribution='&copy; <a href="http:/`/osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={departureCoords} />
-                    <Marker position={arrivalCoords}  />
+                <Polyline positions={polylinePoints} pathOptions={polyLineColor}/>
 
-                    <Polyline positions={polylinePoints} pathOptions={polyLineColor}/>
-
-                </MapContainer>
-            </div>
-        );
-    }
+            </MapContainer>
+        </div>
+    );
 }
 
 export default Map

@@ -3,8 +3,6 @@ import FlightForm from './FlightForm'
 import ResultsPage from './ResultsPage'
 import Header from './Header'
 import AirportService from './AirportService'
-import airports from './AirportList'
-import Map from './Map'
 import "./App.css"
 
 
@@ -40,7 +38,6 @@ class App extends React.Component {
     this.switchPages = this.switchPages.bind(this);
   }
 
-  // it would be cleaner if I passed the type in addition to val and name, then type checked to see if type="checkbox"
   handleChange(value, name) {
     let input = this.state.userInputs;
     if (name.includes("allows")) {

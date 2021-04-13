@@ -4,69 +4,49 @@ import AirportCard from './AirportCard'
 import Map from './Map'
 
 
-class ResultsPage extends React.Component {
-    
-    constructor(props) {
-        super(props);
-        this.state  = {}
-        this.handleRandom = this.handleRandom.bind(this);
-        this.handleBack = this.handleBack.bind(this);
+function ResultsPage(props) {
+
+    const departure = props.departureAirport;
+    const arrival = props.arrivalAirport;
+
+    function handleRandom(e) {
+        props.onRandom();
     }
 
-    handleRandom(e) {
-        this.props.onRandom();
+    function handleBack(e) {
+        props.onBack();
     }
 
-    handleBack(e) {
-        this.props.onBack();
-    }
-
-
-
-    render() {
-
-
-
-        const departure = this.props.departureAirport;
-        const arrival = this.props.arrivalAirport;
-
-        if (!departure || !arrival) {
+    if (!departure || !arrival) {
             return(<div> Loading... </div>);
-        }
-        
-        return ( 
-            <div>
-                <Container className="border">
-                    <Row>
-                        <Col xs={5} className="left-col">
-                            <h2 className="text-left">Departing </h2>
-                            {<AirportCard info={departure} />}
-
-                            <h2 className="text-left">Arriving  &nbsp;                           
-                            <Button variant="primary" onClick={this.handleRandom}>Random</Button>
-                            </h2>  
-
-                            {<AirportCard info={arrival} />}
-                            <Button variant="primary" onClick={this.handleBack}> Back </Button>
-                        </Col>
-
-                        <Col xs={7} className="right-col">
-                            <Map    
-                                departureCoords={[departure.latitudeDeg, departure.longitudeDeg]} 
-                                arrivalCoords={[arrival.latitudeDeg, arrival.longitudeDeg]}
-                            />
-                        </Col>
-                    </Row>
-
-                        
-                </Container>
-
-
-
-
-            </div>
-        );
     }
+        
+    return ( 
+        <div>
+            <Container className="border">
+                <Row>
+                    <Col xs={5} className="left-col">
+                        <h2 className="text-left">Departing </h2>
+                        {<AirportCard info={departure} />}
+
+                        <h2 className="text-left">Arriving  &nbsp;                           
+                        <Button variant="primary" onClick={handleRandom}>Random</Button>
+                        </h2>  
+
+                        {<AirportCard info={arrival} />}
+                        <Button variant="primary" onClick={handleBack}> Back </Button>
+                    </Col>
+
+                    <Col xs={7} className="right-col">
+                        <Map    
+                            departureCoords={[departure.latitudeDeg, departure.longitudeDeg]} 
+                            arrivalCoords={[arrival.latitudeDeg, arrival.longitudeDeg]}
+                        />
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
 
 }
 

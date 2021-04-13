@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 class AirportService {
     
     getAirports(inputs) {
@@ -19,7 +18,6 @@ class AirportService {
         if (allowsSmall) airportSize += "S";
         if (allowsMed) airportSize += "M";
         if (allowsLarge) airportSize += "L"
-        // the airport has to be S||M||L as a requirement to send, so don't worry for now about the string being empty
         
         const completeURL = REST_API_URL + request 
                         + "method=" + method 
@@ -34,18 +32,3 @@ class AirportService {
 }
 
 export default new AirportService()
-
-
-/* 
-
-HTTP GET request params:
-
-    Method: ["arrival"],["departure"],["random"]
-    Airport: [any String]
-    MinRange: [any number]
-    MaxRange: [any number]
-    AllowsSmall: [Boolean]
-    AllowsMed: [Boolean]
-    AllowsLarge: [Boolean]
-
-*/
