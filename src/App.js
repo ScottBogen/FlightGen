@@ -5,13 +5,6 @@ import Header from './Header'
 import AirportService from './AirportService'
 import "./App.css"
 
-
-/* 
-  Main page: FlightForm
-  When the form is successfully submitted, change this view to the results page, where values will be temporary until filled in by the response
-*/
-
-
 class App extends React.Component {
   constructor() {
     super()
@@ -23,13 +16,18 @@ class App extends React.Component {
         departureAirport: '',
         minRange: '',
         maxRange: '',
-        allowsSmallAirports: false,
-        allowsMediumAirports: false,
-        allowsLargeAirports: false
+        allowsSmallAirports: true,
+        allowsMediumAirports: true,
+        allowsLargeAirports: true
       }, 
       airports: [],
       arrivalAirport: null,
-      departureAirport: null
+      departureAirport: null,
+
+      airportValidated: true,
+      distanceValidated: true,
+      airportSizeValidated: true,
+      formInvalidMessage: ""
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -38,22 +36,28 @@ class App extends React.Component {
     this.switchPages = this.switchPages.bind(this);
   }
 
+  // handleChange will update the state's userInputs to match what the program's user enters
   handleChange(value, name) {
     let input = this.state.userInputs;
+    
+    // if the type is a checkbox, 
     if (name.includes("allows")) {
       const cur = input[name];
       input[name] = !cur;
     }
+    // if it's not a checkbox, simply update the value
     else {
       input[name] = value;  
     }
     this.setState({
       input
     });
+
+    this.validateForm();
   }
 
+  // handleSubmit will make a call to the backend and update accordingly
   handleSubmit(){ 
-    // make call to axios
     let inputs = this.state.userInputs;
 
     AirportService.getAirports(inputs).then((response) => {  
@@ -68,6 +72,7 @@ class App extends React.Component {
     });
   }
 
+  // updates airport list after receiving it from GET call
   updateAirports(airports) {
     const departure = airports[0];
     const arrival = this.selectRandomAirport(departure);
@@ -76,32 +81,44 @@ class App extends React.Component {
       arrivalAirport: arrival,
       departureAirport: departure
     });
-
-    console.log("State:")
-    console.log(this.state);
   }
 
+  // selects a random airport to be the Arrival airport
+  // input parameter is the current airport, guaranteed not to be returned by the function
   selectRandomAirport(currAirport) {
-    console.log("Curr airport: ")
-    console.log(currAirport);
     if (!currAirport || !this.state.airports) return null;
     
     const min = 1;
     const max = this.state.airports.length;
     const currIndex = this.state.airports.map(e => e.airportId).indexOf(currAirport.airportId);
-    console.log("min = " + min + " max = " + max + " curr = " + currIndex);
-
-    
     var randomInt = currIndex;
+
     while (randomInt == currIndex) {
         randomInt = Math.floor(Math.random() * (max - min) + min);
     }
 
-    console.log("Random gen: ");
-    console.log(this.state.airports[randomInt]);
     return this.state.airports[randomInt];
   }
 
+  
+  
+  // switch from Form to Results or vice versa
+  switchPages() {
+    this.setState(prevState => ({
+      formPage: !prevState.formPage,
+      resultsPage: !prevState.resultsPage,
+      
+      userInputs: {
+        allowsSmallAirports: true,
+        allowsMediumAirports: true,
+        allowsLargeAirports: true
+      }
+      
+    }));
+  }
+  
+
+  // handles user pressing the "Random" button on Results page
   handleRandom(e) {
     var originalArrival = this.state.arrivalAirport;
     var newArrival = this.selectRandomAirport(originalArrival);
@@ -110,19 +127,69 @@ class App extends React.Component {
     });
   }
 
-  switchPages() {
-    this.setState(prevState => ({
-      formPage: !prevState.formPage,
-      resultsPage: !prevState.resultsPage,
 
-      userInputs: {
-        allowsSmallAirports: false,
-        allowsMediumAirports: false,
-        allowsLargeAirports: false
-      }
+  validateForm() {    
+    const rangeIsInvalid = this.validateRange();
+    const sizeIsInvalid = this.validateSize();
 
-    }));
+    if (rangeIsInvalid) {
+      this.setState({
+        formIsValid: false,
+        formInvalidMessage: rangeIsInvalid
+      }); 
+    } else if (sizeIsInvalid) {
+      this.setState({
+        formIsValid: false,
+        formInvalidMessage: sizeIsInvalid
+      }); 
+    } else {
+      this.setState({
+        formIsValid: true
+      })
+    }
+
+    this.validateRange();
   }
+
+  validateRange() {
+    const minRange = this.state.userInputs.minRange;
+    const maxRange = this.state.userInputs.maxRange;
+
+    if (minRange === "" || maxRange === "") {
+      return ("No input in min/max range")
+    }
+
+    if (isNaN(minRange) || isNaN(maxRange)) {
+      return ("Distance must be numeric");
+    }
+
+    if (minRange < 0) {
+      return ("Distance cannot be negative");
+    }
+
+    if (maxRange < minRange) {
+      return ("Max cannot be larger than Min");
+    }
+
+    if (maxRange > 4000) {
+      return ("Max range cannot exceed 4000nm")
+    }
+
+    return null;
+  }
+
+  validateSize() {
+    const allowsSmallAirports = this.state.userInputs.allowsSmallAirports;
+    const allowsMediumAirports = this.state.userInputs.allowsMediumAirports;
+    const allowsLargeAirports = this.state.userInputs.allowsLargeAirports;
+
+    if (!allowsSmallAirports && !allowsMediumAirports && !allowsLargeAirports) {
+      return ("Airport size must be selected");
+    }
+
+    return null;
+  }
+
 
   render () {
     return (
@@ -132,7 +199,9 @@ class App extends React.Component {
           <FlightForm 
             input={this.state.userInputs} 
             onChange={this.handleChange} 
-            onSubmit={this.handleSubmit}/>
+            onSubmit={this.handleSubmit}
+            formIsValid={this.state.formIsValid}
+          />
         }
         
         {this.state.resultsPage && 
@@ -144,7 +213,6 @@ class App extends React.Component {
             departureAirport={this.state.departureAirport}
           />
         }
-
       </div> 
     );
   }

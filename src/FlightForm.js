@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import './FlightForm.css'
 
 
 function FlightForm(props) {
@@ -26,36 +27,40 @@ function FlightForm(props) {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formAirportSelection">
 
-            <Form.Label> <h4>Airport</h4></Form.Label>
+            <Form.Label className="form-label"> <h4>Airport</h4></Form.Label>
               <Form.Control 
                 type="text" 
                 placeholder="e.g. KLAX or Los Angeles Intl." 
                 name="departureAirport"
                 value={departureAirport}
-                onChange={handleChange}/>
+                onChange={handleChange}
+                required
+                />
             </Form.Group>
 
             <Form.Group controlId="formDistanceSelection">
-              <Form.Label><h4>Distance  (in nautical miles)</h4></Form.Label>
+              <Form.Label className="form-label"><h4>Distance  (in nautical miles)</h4></Form.Label>
               <Row>
                 <Col xs="3">
                   <Form.Label>Min</Form.Label>
                   <Form.Control 
                     type="text" 
-                    // placeholder="0"
                     name="minRange"
                     value={minRange}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    required
+                    />
                 </Col>
 
                 <Col xs="3">
-                  <Form.Label> Max</Form.Label>
+                  <Form.Label className="form-label"> Max</Form.Label>
                   <Form.Control 
                     type="text" 
-                    // placeholder="500"
                     name="maxRange"
                     value={maxRange}
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    required
+                    />
                 </Col>
               </Row>
             </Form.Group>
@@ -67,26 +72,30 @@ function FlightForm(props) {
                 label="Small" 
                 name="allowsSmallAirports"
                 value={allowsSmallAirports} 
-                onChange={handleChange}/>
+                onChange={handleChange}
+                defaultChecked={allowsSmallAirports}
+              />
 
               <Form.Check 
                 type="checkbox" 
                 label="Medium" 
                 name="allowsMediumAirports"
                 value={allowsMediumAirports}
-                onChange={handleChange} />
-
+                onChange={handleChange} 
+                defaultChecked={allowsSmallAirports}
+              />
 
               <Form.Check 
                 type="checkbox" 
                 label="Large" 
                 name="allowsLargeAirports"
                 value={allowsLargeAirports}
-                onChange={handleChange} />         
-                
+                onChange={handleChange} 
+                defaultChecked={allowsSmallAirports}
+              />         
             </Form.Group>
 
-            <Button type="submit"> Generate Flight </Button>
+            <Button disabled={!props.formIsValid} type="submit"> Generate Flight </Button>
           </Form>
         </Container>
     </div>

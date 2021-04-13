@@ -1,0 +1,7 @@
+.form-label {
+    margin-bottom: 0;
+}
+
+.btn.btn-primary[disabled] {
+    background-color: #979797;
+}
